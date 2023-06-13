@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Review App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Book Review App!</h1>
+    {% if current_user.is_authenticated %}
+        <p>Welcome, {{ current_user.name }}!</p>
+        <p><a class="btn" href="{{ url_for('logout') }}">Logout</a></p>
+    {% else %}
+        <p><a class="btn" href="{{ url_for('login') }}">Login</a> or <a class="btn" href="{{ url_for('signup') }}">Sign up</a></p>
+    {% endif %}
+    <hr>
+    <h2>Books:</h2>
+    {% for book in books %}
+      <h2>{{ book.title }}</h2>
+      <h3>{{ book.author }}</h3>
+      <p>{{ book.review }}</p>
+      {% if current_user.is_authenticated and (current_user.id == book.user_id or current_user.is_admin) %}
+        <form action="{{ url_for('delete_book', book_id=book.id) }}" method="post">
+            <button class="btn" type="submit">Delete Book</button>
+        </form>
+    {% endif %} 
+    {% endfor %}
+    {% if current_user.is_authenticated %}
+        <p><a href="{{ url_for('add_book') }}">Add a new book</a></p>
+    {% endif %}
+  </div>
+</body>
+</html>
