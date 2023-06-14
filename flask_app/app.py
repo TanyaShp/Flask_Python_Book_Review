@@ -30,7 +30,7 @@ class Book(db.Model):
         return '<Book %r>' % self.title
 
 @app.route('/')
-def home():
+def index():
     books = Book.query.all()
     return render_template('index.html', books=books)
 
@@ -49,7 +49,7 @@ def login():
         if user:
             if check_password_hash(user.password, password):
                 login_user(user)
-                return redirect(url_for('home'))
+                return redirect(url_for('index'))
             else:
                 flash('Invalid password.')
         else:
@@ -67,7 +67,7 @@ def signup():
             db.session.add(user)
             db.session.commit()
             login_user(user)
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
         flash('A user already exists with that username.')
     return render_template('signup.html')
 
@@ -75,7 +75,7 @@ def signup():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('index'))
 
 # Books handling
 
@@ -90,7 +90,7 @@ def add_book():
         db.session.add(new_book)
         db.session.commit()
         flash('Book added successfully')
-        return redirect(url_for('home'))
+        return redirect(url_for('index'))
     return render_template('add_book.html')
 
 @app.route('/delete_book/<int:book_id>', methods=['POST'])
@@ -103,7 +103,7 @@ def delete_book(book_id):
             db.session.delete(book_to_delete)
             db.session.commit()
             flash('Book has been deleted!', 'success')
-            return redirect(url_for('books'))
+            return redirect(url_for('index'))
         else:
             abort(403)  # Unauthorized action
     else:

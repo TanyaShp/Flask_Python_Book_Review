@@ -1,18 +1,28 @@
 {% extends "base.html" %}
 
+{% block title %}
+Login
+{% endblock %}
+
 {% block content %}
-  <head>
-      <title>Login</title>
-      <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-  </head>
-  <body class="container">
-      <h1>Login</h1>
-      <form method="POST">
-          <label for="name">Username:</label><br>
-          <input type="text" id="name" name="name" required><br>
-          <label for="password">Password:</label><br>
-          <input type="password" id="password" name="password" required><br>
-          <input class="btn" type="submit" value="Login">
-      </form>
-  <body>
+<div class="container">
+  <h1 class="text-center">Login</h1>
+  <form class="mx-auto" style="width: 300px;" method="POST" action="{{ url_for('login') }}">
+    <div class="form-group">
+      <label for="name">Username:</label>
+      <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Login">
+    <a href="{{ url_for('index') }}" class="btn btn-secondary float-right">Go Back</a>
+    <hr>
+  </form>
+  
+{% block messages %}
+  
+{% endblock %}
+</div>
 {% endblock %}

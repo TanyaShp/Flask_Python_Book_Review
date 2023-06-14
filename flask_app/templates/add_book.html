@@ -1,19 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add a Book</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-</head>
-<body class="container">
-    <h1>Add a Book</h1>
-    <form method="POST">
-        <label for="title">Book Title:</label><br>
-        <input type="text" id="title" name="title" required><br>
-        <label for="author">Author</label><br>
-        <input type="text" id="author" name="author" required><br>
-        <label for="review">Review</label><br>
-        <textarea id="review" name="review" required></textarea><br>
-        <input class="btn" type="submit" value="Add Book">
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+Add a Book
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="text-center">Add a Book</h1>
+  <form class="mx-auto" style="width: 300px;" method="POST" action="{{ url_for('add_book') }}">
+    <div class="form-group">
+      <label for="title">Book Title:</label>
+      <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="form-group">
+      <label for="author">Author:</label>
+      <input type="text" class="form-control" id="author" name="author" required>
+    </div>
+    <div class="form-group">
+      <label for="review">Review:</label>
+      <textarea class="form-control" id="review" name="review" required></textarea>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Add Book">
+  </form>
+</div>
+{% endblock %}
