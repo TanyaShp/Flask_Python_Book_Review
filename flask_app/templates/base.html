@@ -6,24 +6,12 @@
     <title>{% block title %}{% endblock %}</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap" rel="stylesheet">
 </head>
 <body>
     {% block content %}
     {% endblock %}
-    <div class="container">
-        <div class="mx-auto" style="width: 300px;">
-            {% with messages = get_flashed_messages(with_categories=True) %}
-                {% if messages %}
-                    <div class="flashes">
-                    {% for category, message in messages %}
-                        <div class="{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-        </div>
-    </div>
     {% block post_content %}
     {% endblock %}
-    </body>
+</body>
 </html>

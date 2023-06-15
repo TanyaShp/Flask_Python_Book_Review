@@ -1,3 +1,23 @@
+body {
+  background: url('img/main_book.jpg') no-repeat center center;
+  background-size: cover;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  color:#BFC0BB;
+}
+
+h1 {
+  font-family: 'Amatic SC', cursive;
+  font-size: 4em;
+  color:#BFC0BB;
+  text-shadow: 2px 2px 4px #000000; 
+}
+
+.card, form {
+  color: #000;
+  background-color: #a2a9a4;
+  padding: 1em;
+}
 
 
 

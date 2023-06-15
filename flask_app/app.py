@@ -3,6 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+from PIL import Image, ImageOps
+import time
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your secret key'
@@ -12,6 +16,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 migrate = Migrate(app, db)
+UPLOAD_FOLDER = os.path.abspath('static/uploads/')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif'}
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,14 +31,16 @@ class Book(db.Model):
     title = db.Column(db.String(100), nullable=True)
     author = db.Column(db.String(100), nullable=True)
     review = db.Column(db.String(500), nullable=True)
+    image_file = db.Column(db.String(120), nullable=True, default='default.jpg')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', name='fk_user_id'), nullable=True)
 
     def __repr__(self):
         return '<Book %r>' % self.title
 
-@app.route('/')
-def index():
-    books = Book.query.all()
+@app.route('/', defaults={'page_num': 1})
+@app.route('/page/<int:page_num>')
+def index(page_num):
+    books = Book.query.paginate(per_page=5, page=page_num, error_out=True)
     return render_template('index.html', books=books)
 
 #User authentication set up
@@ -78,6 +87,10 @@ def logout():
     return redirect(url_for('index'))
 
 # Books handling
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
 
 @app.route('/add_book', methods=['GET', 'POST'])
 @login_required
@@ -86,12 +99,31 @@ def add_book():
         title = request.form.get('title')
         author = request.form.get('author')
         review = request.form.get('review')
-        new_book = Book(title=title, author=author, review=review, user_id=current_user.id)
+        image = request.files.get('image')
+        crop = request.form.get('crop')  # Get the value of the checkbox
+
+        if image and allowed_file(image.filename):
+            filename = str(time.time()) + "_" + secure_filename(image.filename)
+            
+            img = Image.open(image)
+            output_size = (200, 200)
+            if crop == "yes":  # If the crop checkbox was checked
+                img.thumbnail(output_size)  # resize maintaining aspect ratio
+                img = ImageOps.fit(img, output_size, Image.ANTIALIAS, 0, (0.5, 0.5))  # center crop to 200x200
+            else:  # if the crop checkbox was not checked
+                img = img.resize(output_size)  # stretch the image to fit 200x200
+
+            img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            new_book = Book(title=title, author=author, review=review, image_file=filename, user_id=current_user.id)
+        else:
+            new_book = Book(title=title, author=author, review=review, user_id=current_user.id)
+        
         db.session.add(new_book)
         db.session.commit()
         flash('Book added successfully')
         return redirect(url_for('index'))
     return render_template('add_book.html')
+
 
 @app.route('/delete_book/<int:book_id>', methods=['POST'])
 @login_required

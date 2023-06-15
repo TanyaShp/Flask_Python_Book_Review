@@ -21,8 +21,18 @@ Login
     <hr>
   </form>
   
-{% block messages %}
-  
-{% endblock %}
+  {% block messages %}
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+          <div class="flashes mx-auto text-center" style="width: 300px;">
+          {% for category, message in messages %}
+              <div class="{{ category }}">{{ message }}</div>
+          {% endfor %}
+          </div>
+      {% endif %}
+  {% endwith %}
+  <!-- End of flash messages -->
+  {% endblock %}
 </div>
 {% endblock %}
