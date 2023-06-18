@@ -19,6 +19,22 @@ h1 {
   padding: 1em;
 }
 
+.book-image {
+  max-width: 15em;
+  width: 100%;
+  height: auto;
+}
+
+#preview {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
+
 
 
 
