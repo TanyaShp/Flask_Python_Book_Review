@@ -18,6 +18,7 @@ from flask_login import (
     current_user,
 )
 from flask_migrate import Migrate
+from sqlalchemy import or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -43,7 +44,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(100))
     password = db.Column(db.String(100))
     is_admin = db.Column(db.Boolean, default=False)
-    books = db.relationship('Book', backref='user', lazy=True)
+    books = db.relationship("Book", backref="user", lazy=True)
 
 
 class Book(db.Model):
@@ -63,13 +64,22 @@ class Book(db.Model):
 @app.route("/", defaults={"page_num": 1})
 @app.route("/page/<int:page_num>")
 def index(page_num):
-    books = Book.query.paginate(per_page=5, page=page_num, error_out=True)
-    return render_template("index.html", books=books)
+    search_query = request.args.get("q")
+    if search_query:
+        books = Book.query.filter(
+            or_(
+                Book.title.ilike(f"%{search_query}%"),
+                Book.author.ilike(f"%{search_query}%"),
+            )
+        ).paginate(per_page=5, page=page_num, error_out=True)
+    else:
+        books = Book.query.order_by(Book.id.desc()).paginate(
+            per_page=5, page=page_num, error_out=True
+        )
+    return render_template("index.html", books=books, search_query=search_query)
 
 
 # User authentication set up
-
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
