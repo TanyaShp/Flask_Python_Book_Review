@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit a Book
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="text-center">Edit a Book</h1>
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <form id="edit-book-form" method="POST" enctype="multipart/form-data" action="{{ action_url }}">
+        <div class="form-group">
+          <label for="title">Book Title:</label>
+          <input type="text" class="form-control" id="title" name="title" value="{{ book.title }}" required>
+        </div>
+        <div class="form-group">
+          <label for="author">Author:</label>
+          <input type="text" class="form-control" id="author" name="author" value="{{ book.author }}" required>
+        </div>
+        <div class="form-group">
+          <label for="review">Review:</label>
+          <textarea class="form-control" id="review" name="review" required>{{ book.review }}</textarea>
+        </div>
+        <div class="form-group">
+          <label for="image">Book Image:</label>
+          <input type="file" class="form-control" id="image" name="image" accept="image/*">
+        </div>
+        <div>
+          <img id="preview" src="{{ url_for('static', filename='uploads/' + book.image_file) }}" />
+        </div>
+        <div class="mb-3">
+          <button id="crop-btn" type="button" class="btn btn-info" disabled>Crop</button>
+          <button id="ok-btn" type="button" class="btn btn-success" disabled style="display: none;">OK</button>
+          <button id="cancel-btn" type="button" class="btn btn-danger float-right" disabled>Cancel</button>
+        </div>
+        <input type="hidden" id="croppedData" name="croppedData">
+        <div class="form-group">
+          <input class="btn btn-primary" type="submit" value="Update Book">
+          <a href="{{ url_for('index') }}" class="btn btn-secondary float-right">Go Back</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block post_content %}
+<script>
+  var editBookUrl = "{{ url_for('edit_book', book_id=book.id) }}";
+  editSubmitUrl = editBookUrl;
+</script>
+<script src="{{ url_for('static', filename='crop_image.js') }}"></script>
+{% endblock %}

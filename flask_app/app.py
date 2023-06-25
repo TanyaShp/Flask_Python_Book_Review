@@ -43,6 +43,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(100))
     password = db.Column(db.String(100))
     is_admin = db.Column(db.Boolean, default=False)
+    books = db.relationship('Book', backref='user', lazy=True)
 
 
 class Book(db.Model):
@@ -189,6 +190,59 @@ def delete_book(book_id):
     else:
         abort(404)  # Book not found
 
+
+@app.route("/edit_book/<int:book_id>", methods=["GET", "POST"])
+@login_required
+def edit_book(book_id):
+    book_to_edit = Book.query.get(book_id)
+    if book_to_edit:
+        # if the current user is the owner of the book or an admin
+        if book_to_edit.user_id == current_user.id or current_user.is_admin:
+            if request.method == "POST":
+                title = request.form["title"]
+                author = request.form["author"]
+                review = request.form["review"]
+
+                # Check for the cropped_image in the request files
+                if "cropped_image" in request.files:
+                    img_data = request.files["cropped_image"]
+
+                    # Generate a unique filename
+                    filename = generate_unique_filename(title)
+
+                    # Save the image
+                    img_data.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+                # Check for the original_image in the request files
+                elif "original_image" in request.files:
+                    img_data = request.files["original_image"]
+
+                    # Generate a unique filename
+                    filename = generate_unique_filename(title)
+
+                    # Save the image
+                    img_data.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+                else:
+                    filename = "default.jpg"
+
+                book_to_edit.title = title
+                book_to_edit.author = author
+                book_to_edit.review = review
+                book_to_edit.image_file = filename
+
+                db.session.commit()
+
+                flash("Book review has been updated!", "success")
+                return jsonify({"location": url_for("index")}), 200
+            else:
+                return render_template(
+                    "edit_book.html",
+                    book=book_to_edit,
+                    action_url=url_for("edit_book", book_id=book_id),
+                )
+        else:
+            abort(403)  # Unauthorized action
+    else:
+        abort(404)  # Book not found
 
 
 if __name__ == "__main__":

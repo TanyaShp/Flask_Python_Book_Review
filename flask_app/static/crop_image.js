@@ -7,6 +7,8 @@ const croppedData = document.querySelector('#croppedData');
 let imageCropped = false;
 let croppedImageBlob;
 let cropper;
+var addForm = document.querySelector('#add-book-form');
+var editForm = document.querySelector('#edit-book-form');
 
 image.addEventListener('change', function (e) {
   const files = e.target.files;
@@ -22,14 +24,8 @@ image.addEventListener('change', function (e) {
     img.onload = function () {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      const maxWidth = 200;
       let width = img.width;
       let height = img.height;
-
-      if (width > maxWidth) {
-        height *= maxWidth / width;
-        width = maxWidth;
-      }
 
       canvas.width = width;
       canvas.height = height;
@@ -47,7 +43,9 @@ image.addEventListener('change', function (e) {
     img.src = e.target.result;
   };
 
+
   reader.readAsDataURL(files[0]);
+  okBtn.style.display = '';
 });
 
 cropBtn.addEventListener('click', function () {
@@ -75,10 +73,11 @@ cropBtn.addEventListener('click', function () {
   } else {
     // Initialize cropper with the preview image
     cropper = new Cropper(preview, {
-      aspectRatio: preview.width / preview.height,
+      aspectRatio: NaN,
       viewMode: 1,
       autoCropArea: 1,
     });
+    
 
     preview.parentElement.style.display = ''; // show the preview container
     cropBtn.setAttribute('disabled', 'disabled'); // disable the crop button
@@ -145,31 +144,31 @@ image.addEventListener('click', function () {
   preview.src = '';
 });
 
-document.querySelector('#add-book-form').addEventListener('submit', function (event) {
-  event.preventDefault(); // Prevent the default form submission
+function handleFormSubmission(formElement, submitUrl) {
+  formElement.addEventListener('submit', function (event) {
+    event.preventDefault();
 
-  let formData = new FormData(this);
+    let formData = new FormData(this);
 
-  // Append croppedImageBlob to formData if it's not null
-  if (croppedImageBlob) {
-    formData.append('cropped_image', croppedImageBlob, 'cropped_image.png');
-    submitFormData(formData);
-  } else if (image.files.length > 0) {
-    // Append the original image file to the form data only if croppedImageBlob is null
-    formData.append('original_image', image.files[0], image.files[0].name);
-    submitFormData(formData);
-  }
-});
+    if (croppedImageBlob) {
+      formData.append('cropped_image', croppedImageBlob, 'cropped_image.png');
+    } else if (image.files.length > 0) {
+      formData.append('original_image', image.files[0], image.files[0].name);
+    }
+
+    submitFormData(formData, submitUrl, formElement);
+  });
+}
 
 
-function submitFormData(formData) {
-
-  fetch(addBookUrl, {
+function submitFormData(formData, submitUrl, formElement) {
+  fetch(submitUrl, {
     method: 'POST',
     body: formData,
   })
     .then(response => response.json())
     .then(result => {
+      console.log(result);
       if (result.location) {
         window.location.href = result.location;
       }
@@ -180,6 +179,13 @@ function submitFormData(formData) {
     .finally(() => {
       // Reset the form submission
       formData = new FormData();
-      document.querySelector('#add-book-form').reset();
+      formElement.reset();
     });
 }
+
+if (addForm) {
+  handleFormSubmission(addForm, addBookUrl);
+} else if (editForm) {
+  handleFormSubmission(editForm, editBookUrl);
+}
+

@@ -27,11 +27,11 @@ Add a Book
           <input type="file" class="form-control" id="image" name="image" accept="image/*">
         </div>
         <div>
-          <img id="preview" style="max-width: 100%;" />
+          <img id="preview" src="{{ url_for('static', filename='uploads/' + 'default.jpg') }}" />
         </div>
         <div class="mb-3">
           <button id="crop-btn" type="button" class="btn btn-info" disabled>Crop</button>
-          <button id="ok-btn" type="button" class="btn btn-success" disabled>OK</button>
+          <button id="ok-btn" type="button" class="btn btn-success" disabled style="display: none;">OK</button>
           <button id="cancel-btn" type="button" class="btn btn-danger float-right" disabled>Cancel</button>
         </div>
 
@@ -49,6 +49,7 @@ Add a Book
 {% block post_content %}
 <script>
   var addBookUrl = "{{ url_for('add_book') }}";
+  addSubmitUrl = addBookUrl;
 </script>
 <script src="{{ url_for('static', filename='crop_image.js') }}"></script>
 {% endblock %}
