@@ -64,5 +64,6 @@ jobs:
           
       - name: Run Alembic migrations
         run: |
-          az webapp ssh --resource-group appsvc_linux_centralus --name flask-python-book-review-app.azurewebsites.net --command "source venv/bin/activate && alembic upgrade head"
+          az webapp ssh --name flask-python-book-review-app.azurewebsites.net --resource-group appsvc_linux_centralus
+
 
