@@ -1,5 +1,7 @@
 # Book Review App
 
+https://flask-python-book-review-app.azurewebsites.net/
+
 This application is a book review site that allows users to login, add books, edit and delete their book entries, and search for books. It's a Flask web application with SQLite for the database and uses the Flask-Login extension for user authentication.
 
 ## Features
