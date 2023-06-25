@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}
+Book Review App
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="text-center">Welcome to Book Review App!</h1>
+  {% if current_user.is_authenticated %}
+  <p class="text-center welcome-message">Welcome, {{ current_user.name }}!</p>
+  <div class="text-center">
+    <a href="{{ url_for('add_book') }}" class="btn btn-success">Add a new book</a>
+    <a class="btn btn-secondary" href="{{ url_for('logout') }}">Logout</a>
+  </div>
+  {% else %}
+  <p class="text-center"><a class="btn btn-primary" href="{{ url_for('login') }}">Login</a> or <a
+      class="btn btn-primary" href="{{ url_for('signup') }}">Sign up</a></p>
+  {% endif %}
+  <hr>
+  {% with messages = get_flashed_messages(category_filter=["book_action"]) %}
+  {% if messages %}
+  <div class="flashes mx-auto text-center" style="width: 300px;">
+    {% for message in messages %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <h2 class="d-inline-block">Books:</h2>
+    <div>
+      {% if books.has_prev %}
+      <a class="btn btn-info" href="{{ url_for('index', page_num=books.prev_num) }}">Previous</a>
+      {% endif %}
+      {% if books.has_next %}
+      <a class="btn btn-info" href="{{ url_for('index', page_num=books.next_num) }}">Next</a>
+      {% endif %}
+    </div>
+  </div>
+
+
+  {% for book in books.items %}
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <!-- use a placeholder image for now -->
+        <img class="img-fluid book-image" src="{{ url_for('static', filename='uploads/' + book.image_file) }}"
+          alt="Book image">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ book.author }}</h6>
+          <p class="card-text">{{ book.review }}</p>
+          {% if current_user.is_authenticated and (current_user.id == book.user_id or current_user.is_admin) %}
+          <div class="card-footer text-muted">
+            Added by {{ book.user.name }}
+            <a class="btn btn-secondary" href="{{ url_for('edit_book', book_id=book.id) }}">Edit</a>
+            <form class="d-inline" action="{{ url_for('delete_book', book_id=book.id) }}" method="post">
+              <button class="btn btn-danger" type="submit">Delete Book</button>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <div class="d-flex justify-content-between mb-2">
+    {% if books.has_prev %}
+    <a class="btn btn-info" href="{{ url_for('index', page_num=books.prev_num) }}">Previous</a>
+    {% endif %}
+    {% if books.has_next %}
+    <a class="btn btn-info" href="{{ url_for('index', page_num=books.next_num) }}">Next</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
