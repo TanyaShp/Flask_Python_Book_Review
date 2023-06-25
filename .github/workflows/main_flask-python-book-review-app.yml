@@ -61,3 +61,8 @@ jobs:
           app-name: 'flask-python-book-review-app'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_73B90A66522048D4BE8BDCC11B5A11C1 }}
+          
+      - name: Run Alembic migrations
+        run: |
+          az webapp ssh --resource-group appsvc_linux_centralus --name flask-python-book-review-app.azurewebsites.net --command "source venv/bin/activate && alembic upgrade head"
+
