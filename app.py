@@ -19,6 +19,8 @@ from flask_login import (
 )
 from flask_migrate import Migrate
 from sqlalchemy import or_
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -27,13 +29,16 @@ import string
 import random
 
 app = Flask(__name__)
-app.secret_key = "your secret key"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+app.secret_key = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
-migrate = Migrate(app, db)
+
 UPLOAD_FOLDER = os.path.abspath("static/uploads/")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["ALLOWED_EXTENSIONS"] = {"jpg", "jpeg", "png", "gif"}

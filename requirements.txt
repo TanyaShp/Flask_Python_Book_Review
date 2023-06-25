@@ -4,3 +4,4 @@ Flask-Migrate==3.0.1
 Flask-SQLAlchemy==2.5.1
 Werkzeug==2.0.1
 SQLAlchemy==1.4.20
+mysqlclient==2.0.3
