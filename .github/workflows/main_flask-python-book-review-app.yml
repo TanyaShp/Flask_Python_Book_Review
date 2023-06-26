@@ -33,7 +33,8 @@ jobs:
           path: |
             . 
             !venv/
-
+            !.git/
+      
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -63,6 +64,3 @@ jobs:
           app-name: 'flask-python-book-review-app'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_73B90A66522048D4BE8BDCC11B5A11C1 }}
-
-      - name: SSH into webapp
-        run: az webapp ssh --name flask-python-book-review-app.azurewebsites.net --resource-group appsvc_linux_centralus
