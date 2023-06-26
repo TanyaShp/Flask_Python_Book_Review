@@ -1,3 +1,7 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
+
 name: Build and deploy Python app to Azure Web App - flask-python-book-review-app
 
 on:
@@ -26,6 +30,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         
+      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
@@ -33,8 +39,7 @@ jobs:
           path: |
             . 
             !venv/
-            !.git/
-      
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -43,24 +48,16 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Checkout GitHub Action
-        uses: actions/checkout@v2
-
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
           name: python-app
           path: .
-
+          
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'flask-python-book-review-app'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_73B90A66522048D4BE8BDCC11B5A11C1 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C2ACC4EA0D0C4A1185450EFFD6757427 }}
