@@ -48,6 +48,12 @@ image.addEventListener('change', function (e) {
   okBtn.style.display = '';
 });
 
+window.onload = function () {
+  if (preview.src) {
+    cropBtn.removeAttribute('disabled');
+  }
+};
+
 cropBtn.addEventListener('click', function () {
   if (cropper) {
     // Get the cropped image before destroying the Cropper instance
@@ -77,7 +83,7 @@ cropBtn.addEventListener('click', function () {
       viewMode: 1,
       autoCropArea: 1,
     });
-    
+
 
     preview.parentElement.style.display = ''; // show the preview container
     cropBtn.setAttribute('disabled', 'disabled'); // disable the crop button

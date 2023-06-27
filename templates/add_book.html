@@ -24,11 +24,18 @@ Add a Book
         </div>
         <div class="form-group">
           <label for="image">Book Image:</label>
-          <input type="file" class="form-control" id="image" name="image" accept="image/*">
-        </div>
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+              <label class="custom-file-label" for="image" id="file-label">default.jpg</label>
+            </div>
+          </div>
+        </div> 
         <div>
           <img id="preview" src="{{ url_for('static', filename='uploads/' + 'default.jpg') }}" />
+          <br>
         </div>
+        
         <div class="mb-3">
           <button id="crop-btn" type="button" class="btn btn-info" disabled>Crop</button>
           <button id="ok-btn" type="button" class="btn btn-success" disabled style="display: none;">OK</button>
@@ -50,6 +57,13 @@ Add a Book
 <script>
   var addBookUrl = "{{ url_for('add_book') }}";
   addSubmitUrl = addBookUrl;
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('#image').addEventListener('change', function () {
+      document.querySelector('#file-label').textContent = this.files.length > 0 ? this.files[0].name : 'default.jpg';
+    });
+  });
+
+
 </script>
 <script src="{{ url_for('static', filename='scripts/crop_image.js') }}"></script>
 {% endblock %}
