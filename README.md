@@ -1,17 +1,18 @@
 # Book Review App
 
-This application is a book review site that allows users to login, add books with reviews, edit and delete their book entries, and search for books. It's a Flask web application using MySQL for the database hosted on Azure, and uses the Flask-Login extension for user authentication.
+This application is a book review site that allows users to login, add books with reviews, edit and delete their book entries, and search for books. In addition, it allows users to edit and delete reviews. It is a Flask web application using MySQL for the database hosted on Azure, and uses the Flask-Login extension for user authentication.
 
 Live application can be found at: [https://flask-python-book-review-app.azurewebsites.net/](https://flask-python-book-review-app.azurewebsites.net/)
 
 ## Features
 
 - User Authentication: Secure user registration and login functionality.
-- Add Books: Users can add new books with book details and an image. The image upload allows for cropping functionality.
+- Add Books and Reviews: Users can add new books with book details and an image. Users can also add reviews to the books and are able to edit or delete them. The image upload allows for cropping functionality.
 - Edit and Delete Books: Users can edit and delete their book entries.
+- Reviews Display: On the main page, only the 3 latest reviews are displayed, with a "See more" button leading to a page with all reviews.
 - Search Functionality: Allows users to find books by name/author.
-- Pagination: Allows to manage long lists of books.
-- Administrative functions: Allows admins to edit or delete books created by other users.
+- Pagination: Allows managing long lists of books and reviews.
+- Administrative functions: Allows admins to edit or delete books and reviews created by other users.
 
 ## Getting Started
 
@@ -26,19 +27,16 @@ These instructions will get you a copy of the project up and running on your loc
 ### Setup and Installation
 
 1. Clone this repository.
-
     ```
     git clone git@github.com:TanyaShp/Flask_Python_Book_Review.git
     ```
 
 2. Navigate to the project directory.
-
     ```
     cd Flask_Python_Book_Review
     ```
 
 3. Create a virtual environment.
-
     ```
     python -m venv venv
     source venv/bin/activate  # For Unix or MacOS
@@ -46,14 +44,12 @@ These instructions will get you a copy of the project up and running on your loc
     ```
 
 4. Install the dependencies.
-
     ```
     pip install -r requirements.txt
     ```
 
 5. Set up the database following the instructions given in the section below.
 6. Run the application.
-
     ```
     flask run
     ```
@@ -62,7 +58,7 @@ You should now be able to navigate to http://127.0.0.1:5000/ in your web browser
 
 ### SQL Database Setup
 
-Before proceeding, ensure you have a MySQL server instance accessible.
+ensure you have a MySQL server instance accessible.
 
 1. Install MySQL Server and make sure it is running. The installation steps vary by platform (Windows, Linux, MacOS). You can follow the instructions on the official MySQL website to install MySQL: [https://dev.mysql.com/doc/mysql-getting-started/en/](https://dev.mysql.com/doc/mysql-getting-started/en/)
 
@@ -110,6 +106,7 @@ Note: For production, it's recommended to secure your MySQL database connection 
 
 This setup instruction is for MySQL, but you could use any SQL-based database engine with SQLAlchemy, the ORM used in this project. The way you setup and connect to the database might vary. SQLAlchemy provides a helpful guide on how to create engine configurations for different types of databases: [https://docs.sqlalchemy.org/en/14/core/engines.html](https://docs.sqlalchemy.org/en/14/core/engines.html)
 
+
 ### Images
 
 Images to be used for book covers should be placed in the `/static/uploads/` directory. When adding or editing a book, you will be asked to select an image file. 
@@ -127,6 +124,8 @@ Images to be used for book covers should be placed in the `/static/uploads/` dir
 - Admin panel - allow site administrators to manage users.
 - Upvote/downvote system for reviews.
 - Enhanced error handling.
+- Add a feature to allow users to rate the books.
+- Integration with a third-party book API for getting book details automatically.
 
 ## Authors
 
