@@ -7,7 +7,7 @@ Sign Up
 {% block content %}
 <div class="container">
   <h1 class="text-center">Sign Up</h1>
-  <form class="mx-auto" style="width: 300px;" method="POST" action="{{ url_for('signup') }}">
+  <form class="mx-auto card" style="width: 300px;" method="POST" action="{{ url_for('signup') }}">
     <div class="form-group">
       <label for="name">Username:</label>
       <input type="text" class="form-control" id="name" name="name" required>
@@ -16,8 +16,10 @@ Sign Up
       <label for="password">Password:</label>
       <input type="password" class="form-control" id="password" name="password" required>
     </div>
-    <input class="btn btn-primary" type="submit" value="Sign Up">
-    <a href="{{ url_for('index') }}" class="btn btn-secondary float-right">Go Back</a>
+    <div class="text-center">
+      <input class="btn btn-primary float-left" type="submit" value="Sign Up">
+      <a href="{{ url_for('index') }}" class="btn btn-secondary float-right">Go Back</a>
+    </div>
     <hr>
   </form>
 </div>

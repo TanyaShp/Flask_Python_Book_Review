@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+Book Reviews
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-4">Reviews for {{ book.title }}</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="custom-book-info rounded mb-4">
+                <img class="book-image" src="{{ url_for('static', filename='uploads/' + book.image_file) }}"
+                    alt="Book image">
+                <h6 class="card-subtitle mt-2 mb-2">{{ book.title }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{ book.author }}</h6>
+            </div>
+        </div>
+    </div>
+
+    {% for review in book.reviews %}
+    <div class="card mt-3">
+        <div class="card-header">
+            Review by {{ review.user.name }}
+            {% if current_user.is_authenticated and (current_user.id == review.user_id or current_user.is_admin) %}
+            <a href="{{ url_for('edit_review', review_id=review.id) }}" class="btn btn-secondary float-end">Edit</a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ review.content }}</p>
+        </div>
+        <div class="card-footer text-muted">
+            {% if review.date_posted %}
+            Posted on {{ review.date_posted.strftime('%B %d, %Y') }}
+            {% else %}
+            Date not available
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="text-center mt-4 mb-2">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Go Back</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block post_content %}
+{% endblock %}

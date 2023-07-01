@@ -7,7 +7,7 @@ Login
 {% block content %}
 <div class="container">
   <h1 class="text-center">Login</h1>
-  <form class="mx-auto" style="width: 300px;" method="POST" action="{{ url_for('login') }}">
+  <form class="mx-auto card" style="width: 300px;" method="POST" action="{{ url_for('login') }}">
     <div class="form-group">
       <label for="name">Username:</label>
       <input type="text" class="form-control" id="name" name="name" required>
@@ -16,22 +16,24 @@ Login
       <label for="password">Password:</label>
       <input type="password" class="form-control" id="password" name="password" required>
     </div>
-    <input class="btn btn-primary" type="submit" value="Login">
-    <a href="{{ url_for('index') }}" class="btn btn-secondary float-right">Go Back</a>
+    <div class="text-center">
+      <input class="btn btn-primary float-left" type="submit" value="Login">
+      <a href="{{ url_for('index') }}" class="btn btn-secondary float-right">Go Back</a>
+    </div>
     <hr>
   </form>
-  
+
   {% block messages %}
   <!-- Flash messages -->
   {% with messages = get_flashed_messages(category_filter=["login_error"]) %}
-    {% if messages %}
-        <div class="flashes mx-auto text-center" style="width: 300px;">
-        {% for message in messages %}
-            <div class="alert alert-danger">{{ message }}</div>
-        {% endfor %}
-        </div>
-    {% endif %}
-{% endwith %}
+  {% if messages %}
+  <div class="flashes mx-auto text-center" style="width: 300px;">
+    {% for message in messages %}
+    <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
   <!-- End of flash messages -->
   {% endblock %}
 </div>

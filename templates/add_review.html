@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Review
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="text-center">Add Review for {{ book.title }}</h1>
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10 card p-3">
+      <form method="POST" action="{{ url_for('add_review', book_id=book.id) }}">
+        <div class="form-group">
+          <label for="content">Review Content:</label>
+          <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+        </div>
+        <div class="form-group d-flex justify-content-between align-items-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <a href="{{ url_for('index') }}" class="btn btn-secondary ml-2">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -8,7 +8,7 @@ Edit a Book
 <div class="container">
   <h1 class="text-center">Edit a Book</h1>
   <div class="row justify-content-center">
-    <div class="col-lg-6 col-md-8 col-sm-10">
+    <div class="col-lg-6 col-md-8 mb-3  col-sm-10 card p-3">
       <form id="edit-book-form" method="POST" enctype="multipart/form-data" action="{{ action_url }}">
         <div class="form-group">
           <label for="title">Book Title:</label>
@@ -17,10 +17,6 @@ Edit a Book
         <div class="form-group">
           <label for="author">Author:</label>
           <input type="text" class="form-control" id="author" name="author" value="{{ book.author }}" required>
-        </div>
-        <div class="form-group">
-          <label for="review">Review:</label>
-          <textarea class="form-control" id="review" name="review" required>{{ book.review }}</textarea>
         </div>
         <div class="form-group">
           <label for="image">Book Image:</label>
@@ -44,7 +40,7 @@ Edit a Book
         </div>
         <input type="hidden" id="croppedData" name="croppedData">
         <div class="form-group">
-          <input class="btn btn-primary" type="submit" value="Update Book">
+          <input class="btn btn-primary float-left" type="submit" value="Update Book">
           <a href="{{ url_for('index') }}" class="btn btn-secondary float-right">Go Back</a>
         </div>
       </form>
@@ -55,9 +51,8 @@ Edit a Book
 
 {% block post_content %}
 <script>
-  var editBookUrl = "{{ url_for('edit_book', book_id=book.id) }}";
-  editSubmitUrl = editBookUrl;
-
+  var editSubmitUrl = "{{ action_url }}";
+  editBookUrl = editSubmitUrl;
   document.querySelector('#image').addEventListener('change', function (e) {
     var fileName = e.target.files[0].name;
     document.querySelector('#file-label').innerText = fileName;

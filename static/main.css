@@ -1,5 +1,5 @@
 body {
-  background: url('img/main_book.jpg') no-repeat center center;
+  background: url('img/main_book.jpg') repeat center center;
   background-size: cover;
   font-family: 'Roboto', sans-serif;
   min-height: 100vh;
@@ -13,11 +13,11 @@ h1 {
   text-shadow: 2px 2px 4px #000000;
 }
 
-.card,
-form {
-  color: #000;
+.card {
   background-color: #a2a9a4;
+  color: #000;
   padding: 1em;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
 }
 
 .search-form-container,
@@ -25,11 +25,7 @@ form {
   background-color: transparent;
 }
 
-.book-image {
-  max-width: 15em;
-  max-height: 20em;
-  width: 100%;
-}
+
 
 #preview {
   display: block;
@@ -38,4 +34,45 @@ form {
   max-width: 100%;
   max-height: 30em;
   height: auto;
+}
+
+.book-image {
+  max-width: 30em;
+  max-height: 22em;
+  height: auto;
+  width: 100%;
+}
+
+.book-review-image {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  margin-bottom: 1em;
+}
+
+.custom-book-card {
+  width: auto;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(162, 169, 164);
+  /* Reduced opacity to 0.8 */
+  color: #000;
+  padding: 15px;
+  border-radius: 0.25rem;
+}
+
+.custom-book-info {
+  justify-content: center;
+  width: auto;
+  max-width: 330px;
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(162, 169, 164);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
+  color: #000;
+  padding: 15px;
 }
