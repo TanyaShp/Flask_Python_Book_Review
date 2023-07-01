@@ -24,7 +24,7 @@ Book Reviews
         <div class="card-header">
             Review by {{ review.user.name }}
             {% if current_user.is_authenticated and (current_user.id == review.user_id or current_user.is_admin) %}
-            <a href="{{ url_for('edit_review', review_id=review.id) }}" class="btn btn-secondary float-end">Edit</a>
+            <a href="{{ url_for('edit_review', review_id=review.id, book_id=book.id) }}" class="btn btn-secondary float-end">Edit</a>
             {% endif %}
         </div>
         <div class="card-body">

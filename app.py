@@ -296,9 +296,9 @@ def add_review(book_id):
         abort(404)  # Book not found
 
 
-@app.route("/edit_review/<int:review_id>", methods=["GET", "POST"])
+@app.route("/edit_review/<int:review_id>/<int:book_id>", methods=["GET", "POST"])
 @login_required
-def edit_review(review_id):
+def edit_review(review_id, book_id):
     review_to_edit = Review.query.get(review_id)
 
     # Make sure the review exists and belongs to the current user or the user is an admin
@@ -313,12 +313,12 @@ def edit_review(review_id):
             db.session.commit()
 
             flash("Review has been updated!", "success")
-            return redirect(url_for("index"))  # Redirect to index page
+            return redirect(url_for("book_reviews", book_id=book_id))  # Redirect to index page
         else:
             return render_template(
                 "edit_review.html",
                 review=review_to_edit,
-                action_url=url_for("edit_review", review_id=review_id),
+                action_url=url_for("edit_review", review_id=review_id, book_id=book_id),
             )
     else:
         abort(403)  # Unauthorized action
