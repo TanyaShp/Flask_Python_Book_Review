@@ -6,13 +6,14 @@ Live application can be found at: [https://flask-python-book-review-app.azureweb
 
 ## Features
 
-- User Authentication: Secure user registration and login functionality.
-- Add Books and Reviews: Users can add new books with book details and an image. Users can also add reviews to the books and are able to edit or delete them. The image upload allows for cropping functionality.
-- Edit and Delete Books: Users can edit and delete their book entries.
-- Reviews Display: On the main page, only the 3 latest reviews are displayed, with a "See more" button leading to a page with all reviews.
-- Search Functionality: Allows users to find books by name/author.
-- Pagination: Allows managing long lists of books and reviews.
-- Administrative functions: Allows admins to edit or delete books and reviews created by other users.
+- **User Authentication**: Secure user registration and login functionality.
+- **Add Books and Reviews**: Users can add new books with book details and an image. Users can also add reviews to the books and are able to edit or delete them. The image upload allows for cropping functionality.
+- **Edit and Delete Books / Reviews**: Users can edit and delete their book entries and/or reviews.
+- **Reviews Display**: On the main page, only the 3 latest reviews are displayed, with a "See more" button leading to a page with all reviews.
+- **Search Functionality**: Allows users to find books by name/author.
+- **Pagination**: Allows managing long lists of books and reviews.
+- **Administrative functions**: Allows admins to edit or delete books and reviews created by other users.
+- **Responsive Design**: The design of the application is responsive and provides an optimal viewing experience across a wide range of devices (from desktop computer monitors to mobile phones).
 
 ## Getting Started
 
