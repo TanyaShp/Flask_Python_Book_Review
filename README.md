@@ -23,7 +23,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 - Python 3.8 or higher
 - Pip (Python Package Installer)
-- Azure Account
+- Azure Account (*optional for MySQL Server)
 
 ### Setup and Installation
 
@@ -127,6 +127,50 @@ Images to be used for book covers should be placed in the `/static/uploads/` dir
 - Enhanced error handling.
 - Add a feature to allow users to rate the books.
 - Integration with a third-party book API for getting book details automatically.
+
+## Contributing
+
+Appreciate any contribution to this project, whether it is related to bugs, grammar, or simply a suggestion or improvement. 
+
+1. **Fork the project repository**. You can do this by clicking the "Fork" button on the repository page. This will create a copy of the repository and place it in your GitHub account.
+
+2. **Clone the forked repository to your local machine**. Navigate to the location on your computer where you want to store the project, and clone the repository:
+
+    ```bash
+    git clone https://github.com/{your-github-username}/Flask_Python_Book_Review.git
+    ```
+
+3. **Navigate to the project directory**:
+
+    ```bash
+    cd Flask_Python_Book_Review
+    ```
+
+4. **Create a new branch for your feature**. The branch name should be descriptive of the feature or change you are making:
+
+    ```bash
+    git checkout -b feature/name-of-your-new-feature
+    ```
+
+5. **Make changes in your branch**. Implement your feature or bug fix on this branch.
+
+6. **Commit your changes**. Be sure to write clear, concise commit messages describing your changes:
+
+    ```bash
+    git commit -m "Add some feature or fix some bug"
+    ```
+
+7. **Push your branch to GitHub**. Once you are done making changes, push your branch to GitHub using the command:
+
+    ```bash
+    git push origin feature/name-of-your-new-feature
+    ```
+
+8. **Create a pull request**. On the GitHub website, navigate to your forked repository and you'll see your new branch listed at the top with a "Compare & pull request" button. Click on the button to open a pull request.
+
+9. **Wait for your pull request to be reviewed and merged**. Your changes will be reviewed, and if they are accepted, they will be included in the project.
+
+Please follow the code style guide and conventions of the project. If there are any additional contribution guidelines specified by the project, be sure to follow those as well. If your changes are accepted into the core project, you will be listed as a contributor.
 
 ## Authors
 
