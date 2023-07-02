@@ -1,8 +1,8 @@
-Flask==2.0.1
-Flask-Login==0.5.0
-Flask-Migrate==3.0.1
-Flask-SQLAlchemy==2.5.1
-Werkzeug==2.0.1
-SQLAlchemy==1.4.20
-mysqlclient==2.0.3
-pymysql==1.0.2
+Flask==2.3.2
+Flask-Login==0.6.2
+Flask-Migrate==4.0.4
+Flask-SQLAlchemy==3.0.3
+Werkzeug==2.3.6
+SQLAlchemy==2.0.16
+pymysql==1.0.3
+python-dotenv==1.0.0

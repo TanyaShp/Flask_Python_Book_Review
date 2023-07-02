@@ -1,15 +1,19 @@
+// select the relevant HTML elements by their ids
 const image = document.querySelector('#image');
 const preview = document.querySelector('#preview');
 const cropBtn = document.querySelector('#crop-btn');
 const okBtn = document.querySelector('#ok-btn');
 const cancelBtn = document.querySelector('#cancel-btn');
 const croppedData = document.querySelector('#croppedData');
+
+// initialize necessary variables
 let imageCropped = false;
 let croppedImageBlob;
 let cropper;
 var addForm = document.querySelector('#add-book-form');
 var editForm = document.querySelector('#edit-book-form');
 
+// event listener for when a new image is selected for uploading
 image.addEventListener('change', function (e) {
   const files = e.target.files;
 
@@ -37,34 +41,36 @@ image.addEventListener('change', function (e) {
       cropBtn.removeAttribute('disabled');
       preview.parentElement.style.display = ''; // show the preview container
 
-      // Store the resized image data in the hidden field
+      // store the resized image data in the hidden field
       croppedData.value = resizedData;
     };
     img.src = e.target.result;
   };
 
-
+  // reads in the selected image file as a data URL
   reader.readAsDataURL(files[0]);
   okBtn.style.display = '';
 });
 
+// if the previous image was being edited, initialize the crop button
 window.onload = function () {
   if (preview.src) {
     cropBtn.removeAttribute('disabled');
   }
 };
 
+// listener for the crop button, creates a new instance of Cropper.js on the preview image
 cropBtn.addEventListener('click', function () {
   if (cropper) {
-    // Get the cropped image before destroying the Cropper instance
+    // get the cropped image before destroying the Cropper instance
     const canvas = cropper.getCroppedCanvas();
     const croppedImage = canvas.toDataURL();
 
-    // Destroy the Cropper instance
+    // destroy the Cropper instance
     cropper.destroy();
     cropper = null;
 
-    // Set the cropped image to the preview
+    // set the cropped image to the preview
     preview.src = croppedImage;
     croppedData.value = croppedImage;
 
@@ -72,18 +78,17 @@ cropBtn.addEventListener('click', function () {
     cancelBtn.removeAttribute('disabled'); // enable the cancel button
     cropBtn.style.display = 'none'; // hide the crop button
 
-    // Enable the OK button
+    // enable the OK button
     okBtn.style.display = '';
     okBtn.removeAttribute('disabled');
 
   } else {
-    // Initialize cropper with the preview image
+    // initialize cropper with the preview image
     cropper = new Cropper(preview, {
       aspectRatio: NaN,
       viewMode: 1,
       autoCropArea: 1,
     });
-
 
     preview.parentElement.style.display = ''; // show the preview container
     cropBtn.setAttribute('disabled', 'disabled'); // disable the crop button
@@ -93,38 +98,39 @@ cropBtn.addEventListener('click', function () {
   }
 });
 
+// listener for the ok button, finalizes the cropping process and hides the button
 okBtn.addEventListener('click', function () {
-  // Hide the OK button
+  // hide the OK button
   okBtn.style.display = 'none';
   okBtn.setAttribute('disabled', 'disabled');
-  // Generate a new blob for the cropped image and assign it to croppedImageBlob
+  // generate a new blob for the cropped image and assign it to croppedImageBlob
   const canvas = cropper.getCroppedCanvas();
   canvas.toBlob(function (blob) {
     croppedImageBlob = blob;
   });
 
   if (cropper) {
-    // Get the cropped image before destroying the Cropper instance
+    // get the cropped image before destroying the Cropper instance
     const canvas = cropper.getCroppedCanvas();
     const croppedImage = canvas.toDataURL();
 
-    // Destroy the Cropper instance
+    // destroy the Cropper instance
     cropper.destroy();
     cropper = null;
 
-    // Set the cropped image to the preview
+    // set the cropped image to the preview
     preview.src = croppedImage;
   }
 
-  // Enable the Crop button
+  // enable the Crop button
   cropBtn.removeAttribute('disabled');
   cropBtn.style.display = '';
 
-  // Disable the Cancel button
+  // disable the Cancel button
   cancelBtn.setAttribute('disabled', 'disabled');
 });
 
-
+// listener for the cancel button, destroys the Cropper.js instance and resets the preview image
 cancelBtn.addEventListener('click', function () {
   if (cropper) {
     cropper.destroy();
@@ -140,16 +146,18 @@ cancelBtn.addEventListener('click', function () {
   okBtn.setAttribute('disabled', 'disabled'); // disable the OK button
 });
 
+// listener for clicking on the image, resets the crop and ok buttons and the preview image
 image.addEventListener('click', function () {
-  // Reset buttons to their initial state
+  // reset buttons to their initial state
   cropBtn.style.display = '';
   okBtn.style.display = 'none';
   cancelBtn.setAttribute('disabled', 'disabled');
 
-  // Reset the preview image
+  // reset the preview image
   preview.src = '';
 });
 
+// handle the form submission, adds the cropped image or the original image to the form data
 function handleFormSubmission(formElement, submitUrl) {
   formElement.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -166,7 +174,7 @@ function handleFormSubmission(formElement, submitUrl) {
   });
 }
 
-
+// submit the form data to the server
 function submitFormData(formData, submitUrl, formElement) {
   fetch(submitUrl, {
     method: 'POST',
@@ -189,6 +197,7 @@ function submitFormData(formData, submitUrl, formElement) {
     });
 }
 
+// handle the form submission depending on whether the add book form or the edit book form is present
 if (addForm) {
   handleFormSubmission(addForm, addBookUrl);
 } else if (editForm) {
