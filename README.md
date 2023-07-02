@@ -2,7 +2,7 @@
 
 This application is a book review site that allows users to login, add books, add reviews, edit and delete their book entries, and search for books. In addition, it allows users to edit and delete reviews. It is a Flask web application using MySQL for the database hosted on Azure, and uses the Flask-Login extension for user authentication.
 
-Live application can be found at: [https://flask-python-book-review-app.azurewebsites.net/](https://flask-python-book-review-app.azurewebsites.net/)
+The application is automatically deployed to Azure WebApps. 
 
 ## Features
 
