@@ -1,6 +1,6 @@
 # Book Review App
 
-This application is a book review site that allows users to login, add books with reviews, edit and delete their book entries, and search for books. In addition, it allows users to edit and delete reviews. It is a Flask web application using MySQL for the database hosted on Azure, and uses the Flask-Login extension for user authentication.
+This application is a book review site that allows users to login, add books, add reviews, edit and delete their book entries, and search for books. In addition, it allows users to edit and delete reviews. It is a Flask web application using MySQL for the database hosted on Azure, and uses the Flask-Login extension for user authentication.
 
 Live application can be found at: [https://flask-python-book-review-app.azurewebsites.net/](https://flask-python-book-review-app.azurewebsites.net/)
 
@@ -9,7 +9,7 @@ Live application can be found at: [https://flask-python-book-review-app.azureweb
 - **User Authentication**: Secure user registration and login functionality.
 - **Add Books and Reviews**: Users can add new books with book details and an image. Users can also add reviews to the books and are able to edit or delete them. The image upload allows for cropping functionality.
 - **Edit and Delete Books / Reviews**: Users can edit and delete their book entries and/or reviews.
-- **Reviews Display**: On the main page, only the 3 latest reviews are displayed, with a "See more" button leading to a page with all reviews.
+- **Reviews Display**: On the main page, only the 3 reviews are displayed, with a "See more" button leading to a page with all reviews.
 - **Search Functionality**: Allows users to find books by name/author.
 - **Pagination**: Allows managing long lists of books and reviews.
 - **Administrative functions**: Allows admins to edit or delete books and reviews created by other users.
@@ -23,7 +23,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 - Python 3.8 or higher
 - Pip (Python Package Installer)
-- Azure Account (*optional for MySQL Server)
+- MySQL Server
 
 ### Setup and Installation
 
@@ -37,80 +37,43 @@ These instructions will get you a copy of the project up and running on your loc
     cd Flask_Python_Book_Review
     ```
 
-3. Create a virtual environment.
-    ```
-    python -m venv venv
-    source venv/bin/activate  # For Unix or MacOS
-    venv\Scripts\activate  # For Windows
-    ```
-
-4. Install the dependencies.
+3. Install the dependencies.
     ```
     pip install -r requirements.txt
     ```
 
-5. Set up the database following the instructions given in the section below.
-6. Run the application.
+4. Set up the database(s) and follow the instructions given in Environment Variables Setup section below.
+5. Run the application.
     ```
     flask run
     ```
 
 You should now be able to navigate to http://127.0.0.1:5000/ in your web browser and see the application running.
 
-### SQL Database Setup
+### Environment Variables Setup
 
-ensure you have a MySQL server instance accessible.
+This application uses environment variables for managing sensitive data. 
 
-1. Install MySQL Server and make sure it is running. The installation steps vary by platform (Windows, Linux, MacOS). You can follow the instructions on the official MySQL website to install MySQL: [https://dev.mysql.com/doc/mysql-getting-started/en/](https://dev.mysql.com/doc/mysql-getting-started/en/)
+Create a `.env` file at the root of your project and populate it with the necessary information:
 
-2. Create a new MySQL database for your application. You can do this by logging into your MySQL server and running the following command:
+```env
+DATABASE_URL=mysql+pymysql://<username>:<password>@<host>:<port>/<database_name>
+TEST_DB_URL=mysql+pymysql://<username>:<password>@<host>:<port>/<database_test_name>
+SECRET_KEY=<your-secret-key>
+FLASK_ENV=<your-flask-env> # testing or production
+```
 
-    ```bash
-    CREATE DATABASE mydatabase;
-    ```
+TEST_DB_URL is optional and can be removed if separate database is not required for testing.
 
-    Replace `mydatabase` with the name you want to give your database.
+Replace `<username>`, `<password>`, `<host>`, `<port>`, `<database_name>` / `<database_test_name>`, `<your-secret-key>`, and `<your-flask-env>` with your respective information.
 
-3. Make a note of your MySQL server's host (usually localhost if running on your machine), port (usually 3306), and the username and password of the MySQL account that has access to the database.
+Ensure you have a MySQL server instance accessible. You can follow the instructions on the official MySQL website to install MySQL: https://dev.mysql.com/doc/mysql-getting-started/en/
 
-4. Construct your database URL according to this format:
-
-    ```bash
-    mysql+pymysql://<username>:<password>@<host>:<port>/<database_name>
-    ```
-
-    Replace `<username>`, `<password>`, `<host>`, `<port>`, and `<database_name>` with your respective MySQL information.
-
-5. Set your environment variables (replace `{connection-string}` with your actual connection string):
-
-    ```bash
-    export SQLALCHEMY_DATABASE_URI={connection-string}
-    export SECRET_KEY=<your-secret-key>
-    ```
-
-6. Initialize your database:
-
-    ```bash
-    flask db init
-    ```
-
-7. Perform the migrations:
-
-    ```bash
-    flask db migrate -m "Initial migration."
-    flask db upgrade
-    ```
-
-Your MySQL database should now be ready to use with your Flask application.
-
-Note: For production, it's recommended to secure your MySQL database connection using SSL. Instructions for doing this will vary depending on your hosting environment. It's also recommended to not store your `SECRET_KEY` and `SQLALCHEMY_DATABASE_URI` in your source code, but rather to use environment variables or some form of secrets management.
-
-This setup instruction is for MySQL, but you could use any SQL-based database engine with SQLAlchemy, the ORM used in this project. The way you setup and connect to the database might vary. SQLAlchemy provides a helpful guide on how to create engine configurations for different types of databases: [https://docs.sqlalchemy.org/en/14/core/engines.html](https://docs.sqlalchemy.org/en/14/core/engines.html)
-
+Once MySQL Server is set up, use your credentials to replace the placeholders in the .env file. If you are running your MySQL server locally, your `<host>` will be localhost and `<port>` will be 3306 by default.
 
 ### Images
 
-Images to be used for book covers should be placed in the `/static/uploads/` directory. When adding or editing a book, you will be asked to select an image file. 
+Images to be used for book covers once uploaded will be placed in the `/static/uploads/` directory. When adding or editing a book, you will be asked to select an image file. 
 
 ## Built With
 

@@ -23,4 +23,19 @@ Sign Up
     <hr>
   </form>
 </div>
+
+{% block messages %}
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(category_filter=["signup_error"]) %}
+{% if messages %}
+<div class="flashes mx-auto text-center" style="width: 300px;">
+  {% for message in messages %}
+  <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<!-- End of flash messages -->
+{% endblock %}
+</div>
 {% endblock %}

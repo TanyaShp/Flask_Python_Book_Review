@@ -24,14 +24,23 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from dotenv import load_dotenv
 import os
 import string
 import random
 
+load_dotenv()
+
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+
+# Set the SQLALCHEMY_DATABASE_URI depending on the environment
+if os.getenv("FLASK_ENV") == "testing":
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("TEST_DB_URL")
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -129,7 +138,7 @@ def signup():
             db.session.commit()
             login_user(user)
             return redirect(url_for("index"))
-        flash("A user already exists with that username.")
+        flash("A user already exists with that username.", "signup_error")
     return render_template("signup.html")
 
 
@@ -337,6 +346,19 @@ def delete_review(review_id, book_id):
     flash("Your review has been deleted.", "success")
     return redirect(url_for("book_reviews", book_id=book_id))
 
+# Special routes for test
+@app.route('/delete_user/<name>', methods=['DELETE'])
+def delete_user(name):
+    # Only allow this in testing environment
+    if os.getenv("FLASK_ENV") != 'testing':
+        abort(403)  # Forbidden
+    user = User.query.filter_by(name=name).first()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return "User deleted"
+    else:
+        return "User not found", 404
 
 if __name__ == "__main__":
     app.run(debug=True)
